@@ -26,6 +26,26 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Noahv/RiderProjects/CineReview/CineReview/Views/SerieFilmes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VyaWVGaWxtZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Noahv/RiderProjects/CineReview/CineReview/Views/SerieFilmes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VyaWVGaWxtZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Noahv/RiderProjects/CineReview/CineReview/Views/SerieFilmes/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VyaWVGaWxtZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Noahv/RiderProjects/CineReview/CineReview/Views/SerieFilmes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VyaWVGaWxtZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Noahv/RiderProjects/CineReview/CineReview/Views/SerieFilmes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2VyaWVGaWxtZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Noahv/RiderProjects/CineReview/CineReview/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

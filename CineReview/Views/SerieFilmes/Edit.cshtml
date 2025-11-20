@@ -1,0 +1,33 @@
+﻿@model CineReview.Models.SerieFilmeModel
+@using CineReview.Models.Enums
+@{
+    ViewData["Title"] = "Editar";
+}
+<h1>Editar</h1>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Titulo" class="form-label"></label>
+        <input asp-for="Titulo" class="form-control" />
+        <span asp-validation-for="Titulo" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Descricao" class="form-label"></label>
+        <textarea asp-for="Descricao" class="form-control"></textarea>
+        <span asp-validation-for="Descricao" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Genero" class="form-label"></label>
+        <select asp-for="Genero" class="form-select" asp-items="Html.GetEnumSelectList<GeneroEnum>()"></select>
+        <span asp-validation-for="Genero" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Tipo" class="form-label"></label>
+        <select asp-for="Tipo" class="form-select" asp-items="Html.GetEnumSelectList<SerieFilmeEnum>()"></select>
+        <span asp-validation-for="Tipo" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</form>
+@section Scripts{<partial name="_ValidationScriptsPartial" />}
+
