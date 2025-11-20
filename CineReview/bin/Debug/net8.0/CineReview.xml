@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CineReview</name>
+    </assembly>
+    <members>
+        <member name="T:CineReview.Models.Enums.GeneroEnum">
+            <summary>
+            Gêneros comuns para séries e filmes.
+            </summary>
+        </member>
+        <member name="F:CineReview.Models.Enums.SerieFilmeEnum.Serie">
+            <summary>
+            Conteúdo do tipo série.
+            </summary>
+        </member>
+        <member name="F:CineReview.Models.Enums.SerieFilmeEnum.Filme">
+            <summary>
+            Conteúdo do tipo filme.
+            </summary>
+        </member>
+    </members>
+</doc>
