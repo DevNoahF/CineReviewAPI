@@ -20,4 +20,9 @@ public class SerieFilmeModel
 
     [Range(1, int.MaxValue, ErrorMessage = "Selecione se é Série ou Filme.")]
     public SerieFilmeEnum Tipo { get; set; }
+    
+    [Required(ErrorMessage = "Informe a URL da imagem.")]
+    [Url(ErrorMessage = "URL inválida.")]
+    [StringLength(500, ErrorMessage = "A URL deve ter até 500 caracteres.")]
+    public string ImagemURL { get; set; } = string.Empty;
 }

@@ -1,8 +1,20 @@
-﻿        <tr>
+﻿@model IEnumerable<CineReview.Models.SerieFilmeModel>
+@using CineReview.Models.Enums
+@{
+    ViewData["Title"] = "Séries e Filmes";
+}
+<h1>@ViewData["Title"]</h1>
+<p>
+    <a class="btn btn-primary" asp-action="Create">Novo</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
             <th>Título</th>
             <th>Descrição</th>
             <th>Gênero</th>
             <th>Tipo</th>
+            <th>Imagem</th>
             <th></th>
         </tr>
     </thead>
@@ -15,6 +27,12 @@
         <td>@item.Genero</td>
         <td>@item.Tipo</td>
         <td>
+            @if (!string.IsNullOrWhiteSpace(item.ImagemURL))
+            {
+                <img src="@item.ImagemURL" alt="@item.Titulo" style="height:60px;object-fit:cover;" />
+            }
+        </td>
+        <td>
             <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
             <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
             <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
@@ -23,15 +41,3 @@
 }
     </tbody>
 </table>
-@model IEnumerable<CineReview.Models.SerieFilmeModel>
-@using CineReview.Models.Enums
-@{
-    ViewData["Title"] = "Séries e Filmes";
-}
-<h1>@ViewData["Title"]</h1>
-<p>
-    <a class="btn btn-primary" asp-action="Create">Novo</a>
-</p>
-<table class="table table-striped">
-    <thead>
-

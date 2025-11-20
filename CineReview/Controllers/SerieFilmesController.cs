@@ -15,7 +15,7 @@ public class SerieFilmesController : Controller
         _context = context;
     }
 
-    // GET: SerieFilmes
+    // get 
     public async Task<IActionResult> Index()
     {
         var lista = await _context.SerieFilmes.ToListAsync();
@@ -31,7 +31,7 @@ public class SerieFilmesController : Controller
         return View(item);
     }
 
-    // GET: SerieFilmes/Create
+    // get : SerieFilmes/Create -> todos os criados
     public IActionResult Create()
     {
         return View(new SerieFilmeModel());
@@ -39,7 +39,7 @@ public class SerieFilmesController : Controller
 
     // POST: SerieFilmes/Create
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    [ValidateAntiForgeryToken] // Proteção contra CSRF
     public async Task<IActionResult> Create(SerieFilmeModel model)
     {
         if (!ModelState.IsValid) return View(model);

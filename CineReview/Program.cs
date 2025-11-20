@@ -15,11 +15,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 
 var app = builder.Build();
 
-// Ensure database is created
+// Apply migrations automatically (development scenario)
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.EnsureCreated();
+    db.Database.Migrate(); // substitui EnsureCreated para evoluir schema
 }
 
 // Configure the HTTP request pipeline.

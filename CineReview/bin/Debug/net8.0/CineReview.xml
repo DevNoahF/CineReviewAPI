@@ -4,6 +4,18 @@
         <name>CineReview</name>
     </assembly>
     <members>
+        <member name="T:CineReview.Migrations.AddImagemURLToSerieFilme">
+            <inheritdoc />
+        </member>
+        <member name="M:CineReview.Migrations.AddImagemURLToSerieFilme.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CineReview.Migrations.AddImagemURLToSerieFilme.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CineReview.Migrations.AddImagemURLToSerieFilme.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:CineReview.Models.Enums.GeneroEnum">
             <summary>
             Gêneros comuns para séries e filmes.
