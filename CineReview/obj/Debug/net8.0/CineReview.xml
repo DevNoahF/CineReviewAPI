@@ -4,16 +4,16 @@
         <name>CineReview</name>
     </assembly>
     <members>
-        <member name="T:CineReview.Migrations.AddImagemURLToSerieFilme">
+        <member name="T:CineReview.Migrations.InitialCreate">
             <inheritdoc />
         </member>
-        <member name="M:CineReview.Migrations.AddImagemURLToSerieFilme.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:CineReview.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:CineReview.Migrations.AddImagemURLToSerieFilme.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+        <member name="M:CineReview.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
             <inheritdoc />
         </member>
-        <member name="M:CineReview.Migrations.AddImagemURLToSerieFilme.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+        <member name="M:CineReview.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:CineReview.Models.Enums.GeneroEnum">

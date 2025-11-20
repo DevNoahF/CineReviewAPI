@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CineReview.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251120054245_AddImagemURLToSerieFilme")]
-    partial class AddImagemURLToSerieFilme
+    [Migration("20251120062918_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

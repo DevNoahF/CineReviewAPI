@@ -5,7 +5,7 @@
 namespace CineReview.Migrations
 {
     /// <inheritdoc />
-    public partial class AddImagemURLToSerieFilme : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
