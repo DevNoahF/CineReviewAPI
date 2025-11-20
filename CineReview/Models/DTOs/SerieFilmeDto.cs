@@ -23,5 +23,7 @@ public class SerieFilmeDto
     [Url]
     [StringLength(500)]
     public string ImagemURL { get; set; } = string.Empty;
-}
 
+    [Range(0,10)]
+    public double Avaliacao { get; set; }
+}

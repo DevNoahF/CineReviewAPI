@@ -1,6 +1,7 @@
 ﻿using CineReview.Data;
 using CineReview.Models;
 using CineReview.Models.DTOs;
+using CineReview.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace CineReview.Services;
@@ -25,7 +26,8 @@ public class SerieFilmeService : ISerieFilmeService
                 Descricao = e.Descricao,
                 Genero = e.Genero,
                 Tipo = e.Tipo,
-                ImagemURL = e.ImagemURL
+                ImagemURL = e.ImagemURL,
+                Avaliacao = e.Avaliacao
             })
             .ToListAsync();
     }
@@ -42,7 +44,8 @@ public class SerieFilmeService : ISerieFilmeService
                 Descricao = e.Descricao,
                 Genero = e.Genero,
                 Tipo = e.Tipo,
-                ImagemURL = e.ImagemURL
+                ImagemURL = e.ImagemURL,
+                Avaliacao = e.Avaliacao
             })
             .FirstOrDefaultAsync();
     }
@@ -55,7 +58,8 @@ public class SerieFilmeService : ISerieFilmeService
             Descricao = dto.Descricao,
             Genero = dto.Genero,
             Tipo = dto.Tipo,
-            ImagemURL = dto.ImagemURL
+            ImagemURL = dto.ImagemURL,
+            Avaliacao = dto.Avaliacao
         };
         _db.SerieFilmes.Add(entity);
         await _db.SaveChangesAsync();
@@ -72,6 +76,7 @@ public class SerieFilmeService : ISerieFilmeService
         entity.Genero = dto.Genero;
         entity.Tipo = dto.Tipo;
         entity.ImagemURL = dto.ImagemURL;
+        entity.Avaliacao = dto.Avaliacao;
 
         await _db.SaveChangesAsync();
         return true;
@@ -85,5 +90,66 @@ public class SerieFilmeService : ISerieFilmeService
         await _db.SaveChangesAsync();
         return true;
     }
-}
 
+    public async Task<List<SerieFilmeDto>> FilterAsync(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao, string? search)
+    {
+        var query = _db.SerieFilmes.AsNoTracking().AsQueryable();
+
+        if (genero.HasValue)
+            query = query.Where(e => e.Genero == genero.Value);
+        if (tipo.HasValue)
+            query = query.Where(e => e.Tipo == tipo.Value);
+        if (minAvaliacao.HasValue)
+            query = query.Where(e => e.Avaliacao >= minAvaliacao.Value);
+        if (maxAvaliacao.HasValue)
+            query = query.Where(e => e.Avaliacao <= maxAvaliacao.Value);
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var s = search.Trim();
+            query = query.Where(e => e.Titulo.Contains(s) || e.Descricao.Contains(s));
+        }
+
+        return await query
+            .OrderByDescending(e => e.Avaliacao)
+            .ThenBy(e => e.Titulo)
+            .Select(e => new SerieFilmeDto
+            {
+                Id = e.Id,
+                Titulo = e.Titulo,
+                Descricao = e.Descricao,
+                Genero = e.Genero,
+                Tipo = e.Tipo,
+                ImagemURL = e.ImagemURL,
+                Avaliacao = e.Avaliacao
+            }).ToListAsync();
+    }
+
+    public async Task<List<SerieFilmeRankDto>> GetRankingAsync(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null)
+    {
+        var query = _db.SerieFilmes.AsNoTracking().AsQueryable();
+        if (genero.HasValue)
+            query = query.Where(e => e.Genero == genero.Value);
+        if (tipo.HasValue)
+            query = query.Where(e => e.Tipo == tipo.Value);
+
+        var ordered = await query
+            .OrderByDescending(e => e.Avaliacao)
+            .ThenBy(e => e.Titulo)
+            .Take(top)
+            .Select(e => new { e.Id, e.Titulo, e.Genero, e.Tipo, e.Avaliacao, e.ImagemURL })
+            .ToListAsync();
+
+        var rankList = ordered
+            .Select((e, idx) => new SerieFilmeRankDto
+            {
+                Posicao = idx + 1,
+                Id = e.Id,
+                Titulo = e.Titulo,
+                Genero = e.Genero,
+                Tipo = e.Tipo,
+                Avaliacao = e.Avaliacao,
+                ImagemURL = e.ImagemURL
+            }).ToList();
+        return rankList;
+    }
+}

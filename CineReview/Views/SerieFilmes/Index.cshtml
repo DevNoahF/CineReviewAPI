@@ -6,7 +6,43 @@
 <h1>@ViewData["Title"]</h1>
 <p>
     <a class="btn btn-primary" asp-action="Create">Novo</a>
+    <a class="btn btn-outline-secondary" asp-action="Ranking">Ranking</a>
 </p>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-2">
+        <label class="form-label">Gênero</label>
+        <select name="genero" class="form-select">
+            <option value="">Todos</option>
+            @foreach (GeneroEnum g in Enum.GetValues(typeof(GeneroEnum))) {
+                <option value="@((int)g)" selected="@(ViewBag.Genero != null && g == (GeneroEnum)ViewBag.Genero ? "selected" : null)">@g</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Tipo</label>
+        <select name="tipo" class="form-select">
+            <option value="">Todos</option>
+            @foreach (SerieFilmeEnum t in Enum.GetValues(typeof(SerieFilmeEnum))) {
+                <option value="@((int)t)" selected="@(ViewBag.Tipo != null && t == (SerieFilmeEnum)ViewBag.Tipo ? "selected" : null)">@t</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Avaliação mínima</label>
+                <input type="number" step="0.1" name="minAvaliacao" value="@ViewBag.MinAvaliacao" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">Avaliação máxima</label>
+        <input type="number" step="0.1" name="maxAvaliacao" value="@ViewBag.MaxAvaliacao" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Busca</label>
+        <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Título ou descrição" />
+    </div>
+    <div class="col-md-1 d-flex align-items-end">
+        <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
+    </div>
+</form>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -14,6 +50,7 @@
             <th>Descrição</th>
             <th>Gênero</th>
             <th>Tipo</th>
+            <th>Avaliação</th>
             <th>Imagem</th>
             <th></th>
         </tr>
@@ -26,6 +63,7 @@
         <td>@item.Descricao</td>
         <td>@item.Genero</td>
         <td>@item.Tipo</td>
+        <td>@item.Avaliacao.ToString("0.0")</td>
         <td>
             @if (!string.IsNullOrWhiteSpace(item.ImagemURL))
             {

@@ -4,6 +4,44 @@
         <name>CineReview</name>
     </assembly>
     <members>
+        <member name="T:CineReview.Controllers.Api.SerieFilmesApiController">
+            <summary>
+            API para operações CRUD e consulta de séries e filmes.
+            </summary>
+        </member>
+        <member name="M:CineReview.Controllers.Api.SerieFilmesApiController.Get(System.Nullable{CineReview.Models.Enums.GeneroEnum},System.Nullable{CineReview.Models.Enums.SerieFilmeEnum},System.Nullable{System.Double},System.Nullable{System.Double},System.String)">
+            <summary>Lista todos ou aplica filtros.</summary>
+            <param name="genero">Filtro por gênero.</param>
+            <param name="tipo">Filtro por tipo (Série/Filme).</param>
+            <param name="minAvaliacao">Avaliação mínima.</param>
+            <param name="maxAvaliacao">Avaliação máxima.</param>
+            <param name="search">Texto a buscar em título/descrição.</param>
+        </member>
+        <member name="M:CineReview.Controllers.Api.SerieFilmesApiController.GetById(System.Int32)">
+            <summary>Obtém pelo Id.</summary>
+        </member>
+        <member name="M:CineReview.Controllers.Api.SerieFilmesApiController.Create(CineReview.Models.DTOs.SerieFilmeCreateDto)">
+            <summary>Cria um novo registro.</summary>
+        </member>
+        <member name="M:CineReview.Controllers.Api.SerieFilmesApiController.Update(System.Int32,CineReview.Models.DTOs.SerieFilmeUpdateDto)">
+            <summary>Atualiza um registro existente.</summary>
+        </member>
+        <member name="M:CineReview.Controllers.Api.SerieFilmesApiController.Delete(System.Int32)">
+            <summary>Remove um registro.</summary>
+        </member>
+        <member name="M:CineReview.Controllers.Api.SerieFilmesApiController.Ranking(System.Int32,System.Nullable{CineReview.Models.Enums.GeneroEnum},System.Nullable{CineReview.Models.Enums.SerieFilmeEnum})">
+            <summary>Ranking Top N por avaliação.</summary>
+        </member>
+        <member name="T:CineReview.Controllers.SwaggerController">
+            <summary>
+            Controller para facilitar acesso à documentação Swagger.
+            </summary>
+        </member>
+        <member name="M:CineReview.Controllers.SwaggerController.Index">
+            <summary>
+            Redireciona para a interface do Swagger UI em /docs.
+            </summary>
+        </member>
         <member name="T:CineReview.Migrations.AddImagemURLToSerieFilme">
             <inheritdoc />
         </member>
@@ -14,6 +52,18 @@
             <inheritdoc />
         </member>
         <member name="M:CineReview.Migrations.AddImagemURLToSerieFilme.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:CineReview.Migrations.AddAvaliacaoColumn">
+            <inheritdoc />
+        </member>
+        <member name="M:CineReview.Migrations.AddAvaliacaoColumn.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CineReview.Migrations.AddAvaliacaoColumn.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CineReview.Migrations.AddAvaliacaoColumn.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
         <member name="T:CineReview.Models.Enums.GeneroEnum">

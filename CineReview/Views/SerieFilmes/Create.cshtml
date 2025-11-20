@@ -25,6 +25,11 @@
         <select asp-for="Tipo" class="form-select" asp-items="Html.GetEnumSelectList<SerieFilmeEnum>()"></select>
         <span asp-validation-for="Tipo" class="text-danger"></span>
     </div>
+    <div class="mb-3">
+        <label asp-for="Avaliacao" class="form-label"></label>
+        <input asp-for="Avaliacao" type="number" step="0.1" min="0" max="10" class="form-control" />
+        <span asp-validation-for="Avaliacao" class="text-danger"></span>
+    </div>
     <!-- Imagem URL -->
     <div class="mb-3">
         <label asp-for="ImagemURL" class="form-label"></label>

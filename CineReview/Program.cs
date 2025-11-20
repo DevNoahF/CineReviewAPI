@@ -1,13 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using CineReview.Data;
 using CineReview.Services;
+using System.Reflection; // adicionar para XML comments
+using System.Text.Json.Serialization; // para JsonStringEnumConverter
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+// Substituir registro de controllers para converter enums em strings
+builder.Services.AddControllersWithViews().AddJsonOptions(o =>
+{
+    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
-// Swagger / OpenAPI services (configuração básica)
+// Swagger / OpenAPI services (configuração avançada)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -23,7 +29,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate(); // substitui EnsureCreated para evoluir schema
+    db.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.
@@ -42,11 +48,16 @@ app.UseAuthorization();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(); // UI em /swagger
+    app.UseSwaggerUI(c =>
+    {
+        c.RoutePrefix = "docs"; // UI ficará em /docs
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CineReview API v1");
+        // http://localhost:5279/docs/index.html
+    });
 }
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=SerieFilmes}/{action=Index}/{id?}");
 
 app.Run();

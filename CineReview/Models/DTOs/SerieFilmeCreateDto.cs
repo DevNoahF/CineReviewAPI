@@ -21,5 +21,8 @@ public class SerieFilmeCreateDto
     [Url(ErrorMessage = "URL inválida.")]
     [StringLength(500, ErrorMessage = "A URL deve ter até 500 caracteres.")]
     public string ImagemURL { get; set; } = string.Empty;
-}
 
+    [Required]
+    [Range(0, 10, ErrorMessage = "A avaliação deve estar entre 0 e 10.")]
+    public double Avaliacao { get; set; }
+}
