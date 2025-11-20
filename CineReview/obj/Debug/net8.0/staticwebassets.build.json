@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "qmZmUF19rHnyT7u6LAaMzSkDdxA2Hz1F3cjaoqU+Qe4=",
+  "Hash": "0eewQEK291WmKIE4lsJ57n+wptsEx+AQTml1jueE5k4=",
   "Source": "CineReview",
   "BasePath": "_content/CineReview",
   "Mode": "Default",
@@ -91,25 +91,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
-    },
-    {
-      "Identity": "C:\\Users\\Noahv\\RiderProjects\\CineReview\\CineReview\\wwwroot\\js\\site.js",
-      "SourceId": "CineReview",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Noahv\\RiderProjects\\CineReview\\CineReview\\wwwroot\\",
-      "BasePath": "_content/CineReview",
-      "RelativePath": "js/site.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\site.js"
     },
     {
       "Identity": "C:\\Users\\Noahv\\RiderProjects\\CineReview\\CineReview\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",

@@ -1,24 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using CineReview.Data;
-using CineReview.Models;
-using CineReview.Models.Enums;
+using CineReview.Services;
+using CineReview.Models.DTOs;
 
 namespace CineReview.Controllers;
 
 public class SerieFilmesController : Controller
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ISerieFilmeService _service;
 
-    public SerieFilmesController(ApplicationDbContext context)
+    public SerieFilmesController(ISerieFilmeService service)
     {
-        _context = context;
+        _service = service;
     }
 
-    // get 
+    // GET: SerieFilmes
     public async Task<IActionResult> Index()
     {
-        var lista = await _context.SerieFilmes.ToListAsync();
+        var lista = await _service.GetAllAsync();
         return View(lista);
     }
 
@@ -26,25 +24,24 @@ public class SerieFilmesController : Controller
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
-        var item = await _context.SerieFilmes.FirstOrDefaultAsync(m => m.Id == id);
+        var item = await _service.GetByIdAsync(id.Value);
         if (item == null) return NotFound();
         return View(item);
     }
 
-    // get : SerieFilmes/Create -> todos os criados
+    // GET: SerieFilmes/Create
     public IActionResult Create()
     {
-        return View(new SerieFilmeModel());
+        return View(new SerieFilmeCreateDto());
     }
 
     // POST: SerieFilmes/Create
     [HttpPost]
-    [ValidateAntiForgeryToken] // Proteção contra CSRF
-    public async Task<IActionResult> Create(SerieFilmeModel model)
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(SerieFilmeCreateDto dto)
     {
-        if (!ModelState.IsValid) return View(model);
-        _context.Add(model);
-        await _context.SaveChangesAsync();
+        if (!ModelState.IsValid) return View(dto);
+        await _service.CreateAsync(dto);
         return RedirectToAction(nameof(Index));
     }
 
@@ -52,28 +49,29 @@ public class SerieFilmesController : Controller
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
-        var item = await _context.SerieFilmes.FindAsync(id);
+        var item = await _service.GetByIdAsync(id.Value);
         if (item == null) return NotFound();
-        return View(item);
+        var model = new SerieFilmeUpdateDto
+        {
+            Id = item.Id,
+            Titulo = item.Titulo,
+            Descricao = item.Descricao,
+            Genero = item.Genero,
+            Tipo = item.Tipo,
+            ImagemURL = item.ImagemURL
+        };
+        return View(model);
     }
 
     // POST: SerieFilmes/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, SerieFilmeModel model)
+    public async Task<IActionResult> Edit(int id, SerieFilmeUpdateDto dto)
     {
-        if (id != model.Id) return NotFound();
-        if (!ModelState.IsValid) return View(model);
-        try
-        {
-            _context.Update(model);
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!await _context.SerieFilmes.AnyAsync(e => e.Id == model.Id)) return NotFound();
-            throw;
-        }
+        if (id != dto.Id) return NotFound();
+        if (!ModelState.IsValid) return View(dto);
+        var ok = await _service.UpdateAsync(id, dto);
+        if (!ok) return NotFound();
         return RedirectToAction(nameof(Index));
     }
 
@@ -81,7 +79,7 @@ public class SerieFilmesController : Controller
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
-        var item = await _context.SerieFilmes.FirstOrDefaultAsync(m => m.Id == id);
+        var item = await _service.GetByIdAsync(id.Value);
         if (item == null) return NotFound();
         return View(item);
     }
@@ -91,13 +89,7 @@ public class SerieFilmesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var item = await _context.SerieFilmes.FindAsync(id);
-        if (item != null)
-        {
-            _context.SerieFilmes.Remove(item);
-            await _context.SaveChangesAsync();
-        }
+        await _service.DeleteAsync(id);
         return RedirectToAction(nameof(Index));
     }
 }
-

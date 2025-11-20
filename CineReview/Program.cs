@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CineReview.Data;
+using CineReview.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
+// Application services
+builder.Services.AddScoped<ISerieFilmeService, SerieFilmeService>();
 
 var app = builder.Build();
 
