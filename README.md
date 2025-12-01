@@ -27,9 +27,8 @@ O projeto foi desenvolvido para fins acadêmicos, praticando **POO**, **API REST
 
 ### **Rodando o projeto**
 
-```bash
 dotnet run
-```
+
 
 Após iniciar, a API ficará disponível em:
 
@@ -96,15 +95,11 @@ As classes **Filme** e **Serie** herdam de **Midia**, compartilhando atributos e
 
 ### **2- Cálculo de Nota Média**
 
-```csharp
 midia.NotaMedia = midia.Avaliacoes.Average(a => a.Nota);
-```
 
 ### **3- Ranking**
 
-```csharp
 midias.OrderByDescending(m => m.NotaMedia);
-```
 
 ---
 
@@ -122,9 +117,9 @@ Persistência em banco de dados relacional via migrations.
 
 Projeto desenvolvido por:
 
-**Noah Franco**
-**Leonardo Perin**
-**Joaquim Pedro**
-**Gustavo Jesus**
+**Noah Franco**  
+**Leonardo Perin**  
+**Joaquim Pedro**  
+**Gustavo Jesus**  
 
 ---
