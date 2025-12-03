@@ -20,20 +20,20 @@ public class SerieFilmesController : ControllerBase
     }
 
     [HttpGet] // get all
-    public ActionResult<IEnumerable<SerieFilmeDto>> GetTodos()
+    public ActionResult<IEnumerable<SerieFilmeResponseDTO>> GetTodos()
     {
         return Ok(_service.GetAll());
     }
 
     [HttpGet("{id:int}")] // get by id
-    public ActionResult<SerieFilmeDto> GetPorId(int id)
+    public ActionResult<SerieFilmeResponseDTO> GetPorId(int id)
     {
         var item = _service.GetById(id);
         return item is null ? NotFound() : Ok(item);
     }
 
     [HttpPost] // create
-    public ActionResult<SerieFilmeDto> Create([FromBody] SerieFilmeCreateDto dto)
+    public ActionResult<SerieFilmeResponseDTO> Create([FromBody] SerieFilmeCreateDTO dto)
     {
         if (dto is null || !ModelState.IsValid)
             return BadRequest("Dados inválidos.");
@@ -42,7 +42,7 @@ public class SerieFilmesController : ControllerBase
     }
 
     [HttpPut("{id:int}")] // update
-    public IActionResult Update(int id, [FromBody] SerieFilmeUpdateDto dto)
+    public IActionResult Update(int id, [FromBody] SerieFilmeUpdateDTO dto)
     {
         if (dto is null || id != dto.Id || !ModelState.IsValid)
             return BadRequest("Dados inválidos.");
@@ -58,7 +58,7 @@ public class SerieFilmesController : ControllerBase
     }
 
     [HttpGet("filtro")]  // filter by  genero, tipo, minAvaliacao, maxAvaliacao
-    public ActionResult<IEnumerable<SerieFilmeDto>> Filtrar([FromQuery] GeneroEnum? genero, [FromQuery] SerieFilmeEnum? tipo,
+    public ActionResult<IEnumerable<SerieFilmeResponseDTO>> Filtrar([FromQuery] GeneroEnum? genero, [FromQuery] SerieFilmeEnum? tipo,
         [FromQuery] double? minAvaliacao, [FromQuery] double? maxAvaliacao)
     {
         var lista = _service.Filter(genero, tipo, minAvaliacao, maxAvaliacao);
@@ -66,7 +66,7 @@ public class SerieFilmesController : ControllerBase
     }
 
     [HttpGet("ranking")]
-    public ActionResult<IEnumerable<SerieFilmeRankDto>> Ranking([FromQuery] int top = 10, [FromQuery] GeneroEnum? genero = null, [FromQuery] SerieFilmeEnum? tipo = null)
+    public ActionResult<IEnumerable<SerieFilmeRankDTO>> Ranking([FromQuery] int top = 10, [FromQuery] GeneroEnum? genero = null, [FromQuery] SerieFilmeEnum? tipo = null)
     {
         var lista = _service.GetRanking(top, genero, tipo);
         return Ok(lista);

@@ -2,7 +2,7 @@
 
 namespace CineReview.Models.DTOs;
 
-public class SerieFilmeRankDto
+public class SerieFilmeRankDTO
 {
     public int Posicao { get; set; }
     public int Id { get; set; }

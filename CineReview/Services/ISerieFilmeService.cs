@@ -5,11 +5,11 @@ namespace CineReview.Services;
 
 public interface ISerieFilmeService
 {
-    IEnumerable<SerieFilmeDto> GetAll();
-    SerieFilmeDto? GetById(int id);
-    SerieFilmeDto Create(SerieFilmeCreateDto dto);
-    bool Update(int id, SerieFilmeUpdateDto dto);
+    IEnumerable<SerieFilmeResponseDTO> GetAll();
+    SerieFilmeResponseDTO? GetById(int id);
+    SerieFilmeResponseDTO Create(SerieFilmeCreateDTO dto);
+    bool Update(int id, SerieFilmeUpdateDTO dto);
     bool Delete(int id);
-    IEnumerable<SerieFilmeDto> Filter(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao);
-    IEnumerable<SerieFilmeRankDto> GetRanking(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null);
+    IEnumerable<SerieFilmeResponseDTO> Filter(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao);
+    IEnumerable<SerieFilmeRankDTO> GetRanking(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null);
 }

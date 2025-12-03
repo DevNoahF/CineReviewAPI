@@ -15,7 +15,7 @@ public class SerieFilmeService : ISerieFilmeService
         _db = db;
     }
 
-    public IEnumerable<SerieFilmeDto> GetAll()
+    public IEnumerable<SerieFilmeResponseDTO> GetAll()
     {
         return _db.SerieFilmes
             .AsNoTracking()
@@ -24,7 +24,7 @@ public class SerieFilmeService : ISerieFilmeService
             .ToList();
     }
 
-    public SerieFilmeDto? GetById(int id)
+    public SerieFilmeResponseDTO? GetById(int id)
     {
         return _db.SerieFilmes
             .AsNoTracking()
@@ -33,7 +33,7 @@ public class SerieFilmeService : ISerieFilmeService
             .FirstOrDefault();
     }
 
-    public SerieFilmeDto Create(SerieFilmeCreateDto dto)
+    public SerieFilmeResponseDTO Create(SerieFilmeCreateDTO dto)
     {
         var entity = new SerieFilmeModel
         {
@@ -49,7 +49,7 @@ public class SerieFilmeService : ISerieFilmeService
         return ToDto(entity);
     }
 
-    public bool Update(int id, SerieFilmeUpdateDto dto)
+    public bool Update(int id, SerieFilmeUpdateDTO dto)
     {
         var entity = _db.SerieFilmes.Find(id);
         if (entity is null) return false;
@@ -73,7 +73,7 @@ public class SerieFilmeService : ISerieFilmeService
         return true;
     }
 
-    public IEnumerable<SerieFilmeDto> Filter(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao)
+    public IEnumerable<SerieFilmeResponseDTO> Filter(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao)
     {
         var query = _db.SerieFilmes.AsNoTracking().AsQueryable();
         if (genero.HasValue)
@@ -92,14 +92,14 @@ public class SerieFilmeService : ISerieFilmeService
             .ToList();
     }
 
-    public IEnumerable<SerieFilmeRankDto> GetRanking(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null)
+    public IEnumerable<SerieFilmeRankDTO> GetRanking(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null)
     {
         var lista = Filter(genero, tipo, null, null)
             .Take(Math.Max(top, 1))
             .ToList();
 
         var posicao = 1;
-        return lista.Select(item => new SerieFilmeRankDto
+        return lista.Select(item => new SerieFilmeRankDTO
         {
             Posicao = posicao++,
             Id = item.Id,
@@ -111,7 +111,7 @@ public class SerieFilmeService : ISerieFilmeService
         }).ToList();
     }
 
-    private static SerieFilmeDto ToDto(SerieFilmeModel model) => new()
+    private static SerieFilmeResponseDTO ToDto(SerieFilmeModel model) => new()
     {
         Id = model.Id,
         Titulo = model.Titulo,

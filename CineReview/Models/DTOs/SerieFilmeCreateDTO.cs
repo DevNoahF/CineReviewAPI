@@ -3,7 +3,7 @@ using CineReview.Models.Enums;
 
 namespace CineReview.Models.DTOs;
 
-public class SerieFilmeCreateDto
+public class SerieFilmeCreateDTO
 {
     [Required]
     public string Titulo { get; set; } = string.Empty;

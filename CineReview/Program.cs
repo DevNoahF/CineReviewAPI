@@ -6,13 +6,13 @@ using System.Text.Json.Serialization; // para Conversão de enum em string
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Substituir registro de controllers para converter enums em strings
+// Enums to String json reponses configuration
 builder.Services.AddControllers().AddJsonOptions(o =>
 {
     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
-// Swagger / OpenAPI services (configuração avançada)
+// Swagger configuration --
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -30,7 +30,7 @@ app.UseHttpsRedirection();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.RoutePrefix = string.Empty; // Swagger UI disponível em "/"
+    c.RoutePrefix = string.Empty; 
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "CineReview API v1");
 });
 

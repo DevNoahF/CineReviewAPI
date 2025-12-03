@@ -3,7 +3,7 @@ using CineReview.Models.Enums;
 
 namespace CineReview.Models.DTOs;
 
-public class SerieFilmeDto
+public class SerieFilmeResponseDTO
 {
     public int Id { get; set; }
 
