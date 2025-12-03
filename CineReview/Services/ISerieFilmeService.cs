@@ -5,11 +5,11 @@ namespace CineReview.Services;
 
 public interface ISerieFilmeService
 {
-    Task<List<SerieFilmeDto>> GetAllAsync();
-    Task<SerieFilmeDto?> GetByIdAsync(int id);
-    Task<int> CreateAsync(SerieFilmeCreateDto dto);
-    Task<bool> UpdateAsync(int id, SerieFilmeUpdateDto dto);
-    Task<bool> DeleteAsync(int id);
-    Task<List<SerieFilmeDto>> FilterAsync(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao, string? search);
-    Task<List<SerieFilmeRankDto>> GetRankingAsync(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null);
+    IEnumerable<SerieFilmeDto> GetAll();
+    SerieFilmeDto? GetById(int id);
+    SerieFilmeDto Create(SerieFilmeCreateDto dto);
+    bool Update(int id, SerieFilmeUpdateDto dto);
+    bool Delete(int id);
+    IEnumerable<SerieFilmeDto> Filter(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao);
+    IEnumerable<SerieFilmeRankDto> GetRanking(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null);
 }

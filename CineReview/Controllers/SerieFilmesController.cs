@@ -1,120 +1,74 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CineReview.Services;
 using CineReview.Models.DTOs;
+using CineReview.Services;
+using System.Collections.Generic;
 using CineReview.Models.Enums;
 
-namespace CineReview.Controllers;
+namespace CineReview.Controllers.Api;
 
-public class SerieFilmesController : Controller
+
+[ApiController]
+[Route("api/[controller]")]
+public class SerieFilmesController : ControllerBase
 {
     private readonly ISerieFilmeService _service;
 
+    // di 
     public SerieFilmesController(ISerieFilmeService service)
     {
         _service = service;
     }
 
-    // GET: SerieFilmes (with optional filters)
-    public async Task<IActionResult> Index(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao, string? search)
+    [HttpGet] // get all
+    public ActionResult<IEnumerable<SerieFilmeDto>> GetTodos()
     {
-        if (minAvaliacao.HasValue && maxAvaliacao.HasValue && minAvaliacao > maxAvaliacao)
-        {
-            var temp = minAvaliacao; minAvaliacao = maxAvaliacao; maxAvaliacao = temp; // swap to maintain logical order
-        }
-        var lista = (genero.HasValue || tipo.HasValue || minAvaliacao.HasValue || maxAvaliacao.HasValue || !string.IsNullOrWhiteSpace(search))
-            ? await _service.FilterAsync(genero, tipo, minAvaliacao, maxAvaliacao, search)
-            : await _service.GetAllAsync();
-
-        ViewBag.Genero = genero;
-        ViewBag.Tipo = tipo;
-        ViewBag.MinAvaliacao = minAvaliacao;
-        ViewBag.MaxAvaliacao = maxAvaliacao;
-        ViewBag.Search = search;
-        return View(lista);
+        return Ok(_service.GetAll());
     }
 
-    // GET: SerieFilmes/Ranking
-    public async Task<IActionResult> Ranking(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null)
+    [HttpGet("{id:int}")] // get by id
+    public ActionResult<SerieFilmeDto> GetPorId(int id)
     {
-        if (top < 1) top = 1; // garante mínimo de 1
-        var ranking = await _service.GetRankingAsync(top, genero, tipo);
-        ViewBag.Top = top;
-        ViewBag.Genero = genero;
-        ViewBag.Tipo = tipo;
-        return View(ranking);
+        var item = _service.GetById(id);
+        return item is null ? NotFound() : Ok(item);
     }
 
-    // GET: SerieFilmes/Details/5
-    public async Task<IActionResult> Details(int? id)
+    [HttpPost] // create
+    public ActionResult<SerieFilmeDto> Create([FromBody] SerieFilmeCreateDto dto)
     {
-        if (id == null) return NotFound();
-        var item = await _service.GetByIdAsync(id.Value);
-        if (item == null) return NotFound();
-        return View(item);
+        if (dto is null || !ModelState.IsValid)
+            return BadRequest("Dados inválidos.");
+        var novo = _service.Create(dto);
+        return CreatedAtAction(nameof(GetPorId), new { id = novo.Id }, novo);
     }
 
-    // GET: SerieFilmes/Create
-    public IActionResult Create()
+    [HttpPut("{id:int}")] // update
+    public IActionResult Update(int id, [FromBody] SerieFilmeUpdateDto dto)
     {
-        return View(new SerieFilmeCreateDto());
+        if (dto is null || id != dto.Id || !ModelState.IsValid)
+            return BadRequest("Dados inválidos.");
+        var ok = _service.Update(id, dto);
+        return ok ? NoContent() : NotFound();
     }
 
-    // POST: SerieFilmes/Create
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(SerieFilmeCreateDto dto)
+    [HttpDelete("{id:int}")] // delete
+    public IActionResult Delete(int id)
     {
-        if (!ModelState.IsValid) return View(dto);
-        await _service.CreateAsync(dto);
-        return RedirectToAction(nameof(Index));
+        var ok = _service.Delete(id);
+        return ok ? NoContent() : NotFound();
     }
 
-    // GET: SerieFilmes/Edit/5
-    public async Task<IActionResult> Edit(int? id)
+    [HttpGet("filtro")]  // filter by  genero, tipo, minAvaliacao, maxAvaliacao
+    public ActionResult<IEnumerable<SerieFilmeDto>> Filtrar([FromQuery] GeneroEnum? genero, [FromQuery] SerieFilmeEnum? tipo,
+        [FromQuery] double? minAvaliacao, [FromQuery] double? maxAvaliacao)
     {
-        if (id == null) return NotFound();
-        var item = await _service.GetByIdAsync(id.Value);
-        if (item == null) return NotFound();
-        var model = new SerieFilmeUpdateDto
-        {
-            Id = item.Id,
-            Titulo = item.Titulo,
-            Descricao = item.Descricao,
-            Genero = item.Genero,
-            Tipo = item.Tipo,
-            ImagemURL = item.ImagemURL,
-            Avaliacao = item.Avaliacao
-        };
-        return View(model);
+        var lista = _service.Filter(genero, tipo, minAvaliacao, maxAvaliacao);
+        return Ok(lista);
     }
 
-    // POST: SerieFilmes/Edit/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, SerieFilmeUpdateDto dto)
+    [HttpGet("ranking")]
+    public ActionResult<IEnumerable<SerieFilmeRankDto>> Ranking([FromQuery] int top = 10, [FromQuery] GeneroEnum? genero = null, [FromQuery] SerieFilmeEnum? tipo = null)
     {
-        if (id != dto.Id) return NotFound();
-        if (!ModelState.IsValid) return View(dto);
-        var ok = await _service.UpdateAsync(id, dto);
-        if (!ok) return NotFound();
-        return RedirectToAction(nameof(Index));
-    }
-
-    // GET: SerieFilmes/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null) return NotFound();
-        var item = await _service.GetByIdAsync(id.Value);
-        if (item == null) return NotFound();
-        return View(item);
-    }
-
-    // POST: SerieFilmes/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-        await _service.DeleteAsync(id);
-        return RedirectToAction(nameof(Index));
+        var lista = _service.GetRanking(top, genero, tipo);
+        return Ok(lista);
     }
 }

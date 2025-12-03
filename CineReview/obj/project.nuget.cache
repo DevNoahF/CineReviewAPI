@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "asbGJQi9OGo=",
+  "dgSpecHash": "TK9I/n1kYhY=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Noahv\\RiderProjects\\CineReview\\CineReview\\CineReview.csproj",
+  "projectFilePath": "C:\\Users\\Noahv\\RiderProjects\\CineReviewAPI\\CineReview\\CineReview.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Noahv\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Noahv\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

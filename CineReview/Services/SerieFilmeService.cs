@@ -15,42 +15,25 @@ public class SerieFilmeService : ISerieFilmeService
         _db = db;
     }
 
-    public async Task<List<SerieFilmeDto>> GetAllAsync()
+    public IEnumerable<SerieFilmeDto> GetAll()
     {
-        return await _db.SerieFilmes
+        return _db.SerieFilmes
             .AsNoTracking()
-            .Select(e => new SerieFilmeDto
-            {
-                Id = e.Id,
-                Titulo = e.Titulo,
-                Descricao = e.Descricao,
-                Genero = e.Genero,
-                Tipo = e.Tipo,
-                ImagemURL = e.ImagemURL,
-                Avaliacao = e.Avaliacao
-            })
-            .ToListAsync();
+            .OrderBy(x => x.Id)
+            .Select(ToDto)
+            .ToList();
     }
 
-    public async Task<SerieFilmeDto?> GetByIdAsync(int id)
+    public SerieFilmeDto? GetById(int id)
     {
-        return await _db.SerieFilmes
+        return _db.SerieFilmes
             .AsNoTracking()
-            .Where(e => e.Id == id)
-            .Select(e => new SerieFilmeDto
-            {
-                Id = e.Id,
-                Titulo = e.Titulo,
-                Descricao = e.Descricao,
-                Genero = e.Genero,
-                Tipo = e.Tipo,
-                ImagemURL = e.ImagemURL,
-                Avaliacao = e.Avaliacao
-            })
-            .FirstOrDefaultAsync();
+            .Where(x => x.Id == id)
+            .Select(ToDto)
+            .FirstOrDefault();
     }
 
-    public async Task<int> CreateAsync(SerieFilmeCreateDto dto)
+    public SerieFilmeDto Create(SerieFilmeCreateDto dto)
     {
         var entity = new SerieFilmeModel
         {
@@ -62,14 +45,14 @@ public class SerieFilmeService : ISerieFilmeService
             Avaliacao = dto.Avaliacao
         };
         _db.SerieFilmes.Add(entity);
-        await _db.SaveChangesAsync();
-        return entity.Id;
+        _db.SaveChanges();
+        return ToDto(entity);
     }
 
-    public async Task<bool> UpdateAsync(int id, SerieFilmeUpdateDto dto)
+    public bool Update(int id, SerieFilmeUpdateDto dto)
     {
-        var entity = await _db.SerieFilmes.FindAsync(id);
-        if (entity == null) return false;
+        var entity = _db.SerieFilmes.Find(id);
+        if (entity is null) return false;
 
         entity.Titulo = dto.Titulo;
         entity.Descricao = dto.Descricao;
@@ -77,79 +60,65 @@ public class SerieFilmeService : ISerieFilmeService
         entity.Tipo = dto.Tipo;
         entity.ImagemURL = dto.ImagemURL;
         entity.Avaliacao = dto.Avaliacao;
-
-        await _db.SaveChangesAsync();
+        _db.SaveChanges();
         return true;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public bool Delete(int id)
     {
-        var entity = await _db.SerieFilmes.FindAsync(id);
-        if (entity == null) return false;
+        var entity = _db.SerieFilmes.Find(id);
+        if (entity is null) return false;
         _db.SerieFilmes.Remove(entity);
-        await _db.SaveChangesAsync();
+        _db.SaveChanges();
         return true;
     }
 
-    public async Task<List<SerieFilmeDto>> FilterAsync(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao, string? search)
+    public IEnumerable<SerieFilmeDto> Filter(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao)
     {
         var query = _db.SerieFilmes.AsNoTracking().AsQueryable();
-
         if (genero.HasValue)
-            query = query.Where(e => e.Genero == genero.Value);
+            query = query.Where(x => x.Genero == genero.Value);
         if (tipo.HasValue)
-            query = query.Where(e => e.Tipo == tipo.Value);
+            query = query.Where(x => x.Tipo == tipo.Value);
         if (minAvaliacao.HasValue)
-            query = query.Where(e => e.Avaliacao >= minAvaliacao.Value);
+            query = query.Where(x => x.Avaliacao >= minAvaliacao.Value);
         if (maxAvaliacao.HasValue)
-            query = query.Where(e => e.Avaliacao <= maxAvaliacao.Value);
-        if (!string.IsNullOrWhiteSpace(search))
-        {
-            var s = search.Trim();
-            query = query.Where(e => e.Titulo.Contains(s) || e.Descricao.Contains(s));
-        }
+            query = query.Where(x => x.Avaliacao <= maxAvaliacao.Value);
 
-        return await query
-            .OrderByDescending(e => e.Avaliacao)
-            .ThenBy(e => e.Titulo)
-            .Select(e => new SerieFilmeDto
-            {
-                Id = e.Id,
-                Titulo = e.Titulo,
-                Descricao = e.Descricao,
-                Genero = e.Genero,
-                Tipo = e.Tipo,
-                ImagemURL = e.ImagemURL,
-                Avaliacao = e.Avaliacao
-            }).ToListAsync();
+        return query
+            .OrderByDescending(x => x.Avaliacao)
+            .ThenBy(x => x.Titulo)
+            .Select(ToDto)
+            .ToList();
     }
 
-    public async Task<List<SerieFilmeRankDto>> GetRankingAsync(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null)
+    public IEnumerable<SerieFilmeRankDto> GetRanking(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null)
     {
-        var query = _db.SerieFilmes.AsNoTracking().AsQueryable();
-        if (genero.HasValue)
-            query = query.Where(e => e.Genero == genero.Value);
-        if (tipo.HasValue)
-            query = query.Where(e => e.Tipo == tipo.Value);
+        var lista = Filter(genero, tipo, null, null)
+            .Take(Math.Max(top, 1))
+            .ToList();
 
-        var ordered = await query
-            .OrderByDescending(e => e.Avaliacao)
-            .ThenBy(e => e.Titulo)
-            .Take(top)
-            .Select(e => new { e.Id, e.Titulo, e.Genero, e.Tipo, e.Avaliacao, e.ImagemURL })
-            .ToListAsync();
-
-        var rankList = ordered
-            .Select((e, idx) => new SerieFilmeRankDto
-            {
-                Posicao = idx + 1,
-                Id = e.Id,
-                Titulo = e.Titulo,
-                Genero = e.Genero,
-                Tipo = e.Tipo,
-                Avaliacao = e.Avaliacao,
-                ImagemURL = e.ImagemURL
-            }).ToList();
-        return rankList;
+        var posicao = 1;
+        return lista.Select(item => new SerieFilmeRankDto
+        {
+            Posicao = posicao++,
+            Id = item.Id,
+            Titulo = item.Titulo,
+            Genero = item.Genero,
+            Tipo = item.Tipo,
+            Avaliacao = item.Avaliacao,
+            ImagemURL = item.ImagemURL
+        }).ToList();
     }
+
+    private static SerieFilmeDto ToDto(SerieFilmeModel model) => new()
+    {
+        Id = model.Id,
+        Titulo = model.Titulo,
+        Descricao = model.Descricao,
+        Genero = model.Genero,
+        Tipo = model.Tipo,
+        ImagemURL = model.ImagemURL,
+        Avaliacao = model.Avaliacao
+    };
 }
