@@ -11,7 +11,7 @@ public class SerieFilmeResponseDTO
     public string Titulo { get; set; } = string.Empty;
 
     [Required]
-    public string Descricao { get; set; } = string.Empty;
+    public string Comentario { get; set; } = string.Empty;
 
     [Range(1, int.MaxValue)]
     public GeneroEnum Genero { get; set; }
@@ -25,5 +25,5 @@ public class SerieFilmeResponseDTO
     public string ImagemURL { get; set; } = string.Empty;
 
     [Range(0,10)]
-    public double Avaliacao { get; set; }
+    public double Nota { get; set; }
 }

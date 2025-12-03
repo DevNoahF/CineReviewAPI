@@ -12,14 +12,14 @@ builder.Services.AddControllers().AddJsonOptions(o =>
     o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
-// Swagger configuration --
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+// database connection
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.
+    UseSqlServer(connectionString));
 
 builder.Services.AddScoped<ISerieFilmeService, SerieFilmeService>();
 
@@ -27,6 +27,7 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
+// Swagger configuration --
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {

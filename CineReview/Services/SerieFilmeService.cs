@@ -1,8 +1,9 @@
-﻿using CineReview.Data;
-using CineReview.Models;
+﻿using System.Linq;
+using CineReview.Data;
 using CineReview.Models.DTOs;
 using CineReview.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using CineReview.Mapper;
 
 namespace CineReview.Services;
 
@@ -10,60 +11,53 @@ public class SerieFilmeService : ISerieFilmeService
 {
     private readonly ApplicationDbContext _db;
 
+    // DI
     public SerieFilmeService(ApplicationDbContext db)
     {
         _db = db;
     }
 
+    // get all
     public IEnumerable<SerieFilmeResponseDTO> GetAll()
     {
         return _db.SerieFilmes
-            .AsNoTracking()
+            .AsNoTracking() // no tracking just read
             .OrderBy(x => x.Id)
-            .Select(ToDto)
+            .AsEnumerable()
+            .Select(SerieFilmeMapper.ToDto)
             .ToList();
     }
 
+    // get by id
     public SerieFilmeResponseDTO? GetById(int id)
     {
         return _db.SerieFilmes
             .AsNoTracking()
             .Where(x => x.Id == id)
-            .Select(ToDto)
+            .Select(SerieFilmeMapper.ToDto)
             .FirstOrDefault();
     }
 
+    // create
     public SerieFilmeResponseDTO Create(SerieFilmeCreateDTO dto)
     {
-        var entity = new SerieFilmeModel
-        {
-            Titulo = dto.Titulo,
-            Descricao = dto.Descricao,
-            Genero = dto.Genero,
-            Tipo = dto.Tipo,
-            ImagemURL = dto.ImagemURL,
-            Avaliacao = dto.Avaliacao
-        };
+        var entity = SerieFilmeMapper.FromCreateDto(dto);
         _db.SerieFilmes.Add(entity);
         _db.SaveChanges();
-        return ToDto(entity);
+        return SerieFilmeMapper.ToDto(entity);
     }
 
+    // update
     public bool Update(int id, SerieFilmeUpdateDTO dto)
     {
-        var entity = _db.SerieFilmes.Find(id);
-        if (entity is null) return false;
-
-        entity.Titulo = dto.Titulo;
-        entity.Descricao = dto.Descricao;
-        entity.Genero = dto.Genero;
-        entity.Tipo = dto.Tipo;
-        entity.ImagemURL = dto.ImagemURL;
-        entity.Avaliacao = dto.Avaliacao;
+        var serchId = _db.SerieFilmes.Find(id);
+        if (serchId == null) return false;
+        SerieFilmeMapper.ApplyUpdate(serchId, dto);
         _db.SaveChanges();
         return true;
     }
 
+    // delete
     public bool Delete(int id)
     {
         var entity = _db.SerieFilmes.Find(id);
@@ -73,6 +67,7 @@ public class SerieFilmeService : ISerieFilmeService
         return true;
     }
 
+    // filter by genero, tipo, minNota, maxNota
     public IEnumerable<SerieFilmeResponseDTO> Filter(GeneroEnum? genero, SerieFilmeEnum? tipo, double? minAvaliacao, double? maxAvaliacao)
     {
         var query = _db.SerieFilmes.AsNoTracking().AsQueryable();
@@ -81,17 +76,18 @@ public class SerieFilmeService : ISerieFilmeService
         if (tipo.HasValue)
             query = query.Where(x => x.Tipo == tipo.Value);
         if (minAvaliacao.HasValue)
-            query = query.Where(x => x.Avaliacao >= minAvaliacao.Value);
+            query = query.Where(x => x.Nota >= minAvaliacao.Value);
         if (maxAvaliacao.HasValue)
-            query = query.Where(x => x.Avaliacao <= maxAvaliacao.Value);
+            query = query.Where(x => x.Nota <= maxAvaliacao.Value);
 
         return query
-            .OrderByDescending(x => x.Avaliacao)
+            .OrderByDescending(x => x.Nota)
             .ThenBy(x => x.Titulo)
-            .Select(ToDto)
+            .Select(SerieFilmeMapper.ToDto)
             .ToList();
     }
 
+    // get ranking
     public IEnumerable<SerieFilmeRankDTO> GetRanking(int top = 10, GeneroEnum? genero = null, SerieFilmeEnum? tipo = null)
     {
         var lista = Filter(genero, tipo, null, null)
@@ -106,19 +102,8 @@ public class SerieFilmeService : ISerieFilmeService
             Titulo = item.Titulo,
             Genero = item.Genero,
             Tipo = item.Tipo,
-            Avaliacao = item.Avaliacao,
+            Avaliacao = item.Nota,
             ImagemURL = item.ImagemURL
         }).ToList();
     }
-
-    private static SerieFilmeResponseDTO ToDto(SerieFilmeModel model) => new()
-    {
-        Id = model.Id,
-        Titulo = model.Titulo,
-        Descricao = model.Descricao,
-        Genero = model.Genero,
-        Tipo = model.Tipo,
-        ImagemURL = model.ImagemURL,
-        Avaliacao = model.Avaliacao
-    };
 }

@@ -11,8 +11,6 @@ C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\CineReview.A
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\CineReview.AssemblyInfo.cs
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\CineReview.csproj.CoreCompileInputs.cache
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\CineReview.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\CineReview.RazorAssemblyInfo.cache
-C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\CineReview.RazorAssemblyInfo.cs
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\staticwebassets\msbuild.CineReview.Microsoft.AspNetCore.StaticWebAssets.props
@@ -20,9 +18,7 @@ C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\staticwebass
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.CineReview.props
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.CineReview.props
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\staticwebassets.pack.json
-C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\scopedcss\bundle\CineReview.styles.css
-C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\scopedcss\projectbundle\CineReview.bundle.scp.css
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\CineReview.dll
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\refint\CineReview.dll
 C:\Users\Noahv\RiderProjects\CineReview\CineReview\obj\Debug\net8.0\CineReview.pdb

@@ -13,7 +13,7 @@ public class SerieFilmeModel
     public string Titulo { get; set; } = string.Empty;
 
     [Required]
-    public string Descricao { get; set; } = string.Empty;
+    public string Comentario { get; set; } = string.Empty;
 
     [Range(1, int.MaxValue, ErrorMessage = "Selecione um gênero válido.")]
     public GeneroEnum Genero { get; set; }
@@ -27,7 +27,7 @@ public class SerieFilmeModel
     public string ImagemURL { get; set; } = string.Empty;
 
     [Required]
-    [Range(0,10, ErrorMessage = "A avaliação deve estar entre 0 e 10.")]
-    [Display(Name = "Avaliação")]
-    public double Avaliacao { get; set; } = 0.0;
+    [Range(0,10, ErrorMessage = "A nota deve estar entre 0 e 10.")]
+    [Display(Name = "Nota")]
+    public double Nota { get; set; } = 0.0;
 }

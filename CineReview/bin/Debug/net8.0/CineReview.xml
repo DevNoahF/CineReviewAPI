@@ -28,6 +28,18 @@
         <member name="M:CineReview.Migrations.AddAvaliacaoColumn.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
+        <member name="T:CineReview.Migrations.refactDescricaoAndAvaliacao">
+            <inheritdoc />
+        </member>
+        <member name="M:CineReview.Migrations.refactDescricaoAndAvaliacao.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CineReview.Migrations.refactDescricaoAndAvaliacao.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:CineReview.Migrations.refactDescricaoAndAvaliacao.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
         <member name="T:CineReview.Models.Enums.GeneroEnum">
             <summary>
             Gêneros comuns para séries e filmes.

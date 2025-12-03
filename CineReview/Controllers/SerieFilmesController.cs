@@ -20,25 +20,25 @@ public class SerieFilmesController : ControllerBase
     }
 
     [HttpGet] // get all
-    public ActionResult<IEnumerable<SerieFilmeResponseDTO>> GetTodos()
+    public ActionResult<IEnumerable<SerieFilmeResponseDTO>> GetAll()
     {
         return Ok(_service.GetAll());
     }
 
     [HttpGet("{id:int}")] // get by id
-    public ActionResult<SerieFilmeResponseDTO> GetPorId(int id)
+    public ActionResult<SerieFilmeResponseDTO> GetById(int id)
     {
         var item = _service.GetById(id);
         return item is null ? NotFound() : Ok(item);
     }
 
-    [HttpPost] // create
+    [HttpPost] // create 
     public ActionResult<SerieFilmeResponseDTO> Create([FromBody] SerieFilmeCreateDTO dto)
     {
-        if (dto is null || !ModelState.IsValid)
+        if (dto is null)
             return BadRequest("Dados inválidos.");
         var novo = _service.Create(dto);
-        return CreatedAtAction(nameof(GetPorId), new { id = novo.Id }, novo);
+        return Created("Review Criado!",novo);
     }
 
     [HttpPut("{id:int}")] // update
@@ -54,7 +54,9 @@ public class SerieFilmesController : ControllerBase
     public IActionResult Delete(int id)
     {
         var ok = _service.Delete(id);
-        return ok ? NoContent() : NotFound();
+        if (!ok)
+            return NotFound();
+        return NoContent();
     }
 
     [HttpGet("filtro")]  // filter by  genero, tipo, minAvaliacao, maxAvaliacao
